@@ -21,7 +21,7 @@ import okio.ByteString
 import kotlin.reflect.KClass
 
 actual abstract class ProtoAdapter<E> actual constructor(
-  internal actual val fieldEncoding: FieldEncoding,
+  @JsName("fieldEncoding") internal actual val fieldEncoding: FieldEncoding,
   actual val type: KClass<*>?
 ) {
   internal actual val packedAdapter: ProtoAdapter<List<E>>? = when {
@@ -35,12 +35,14 @@ actual abstract class ProtoAdapter<E> actual constructor(
   }
 
   /** Returns the redacted form of `value`. */
+  @JsName("redact")
   actual abstract fun redact(value: E): E
 
   /**
    * The size of the non-null data `value`. This does not include the size required for a
    * length-delimited prefix (should the type require one).
    */
+  @JsName("encodedSize")
   actual abstract fun encodedSize(value: E): Int
 
   /**
@@ -48,42 +50,51 @@ actual abstract class ProtoAdapter<E> actual constructor(
    * length-delimited prefix (should the type require one), and value. Returns 0 if `value` is
    * null.
    */
+  @JsName("encodedSizeWithTag")
   actual open fun encodedSizeWithTag(tag: Int, value: E?): Int {
     return commonEncodedSizeWithTag(tag, value)
   }
 
   /** Write non-null `value` to `writer`. */
+  @JsName("encode")
   actual abstract fun encode(writer: ProtoWriter, value: E)
 
   /** Write `tag` and `value` to `writer`. If value is null this does nothing. */
+  @JsName("encodeWithTag")
   actual open fun encodeWithTag(writer: ProtoWriter, tag: Int, value: E?) {
     commonEncodeWithTag(writer, tag, value)
   }
 
   /** Encode `value` and write it to `stream`. */
+  @JsName("encodeToSink")
   actual fun encode(sink: BufferedSink, value: E) {
     commonEncode(sink, value)
   }
 
   /** Encode `value` as a `byte[]`. */
+  @JsName("encodeToByteArray")
   actual fun encode(value: E): ByteArray {
     return commonEncode(value)
   }
 
   /** Read a non-null value from `reader`. */
+  @JsName("decode")
   actual abstract fun decode(reader: ProtoReader): E
 
   /** Read an encoded message from `bytes`. */
+  @JsName("decodeFromBytes")
   actual fun decode(bytes: ByteArray): E {
     return commonDecode(bytes)
   }
 
   /** Read an encoded message from `bytes`. */
+  @JsName("decodeFromByteString")
   actual fun decode(bytes: ByteString): E {
     return commonDecode(bytes)
   }
 
   /** Read an encoded message from `source`. */
+  @JsName("decodeFromSource")
   actual fun decode(source: BufferedSource): E {
     return commonDecode(source)
   }

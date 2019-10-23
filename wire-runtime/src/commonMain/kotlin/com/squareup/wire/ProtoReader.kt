@@ -42,6 +42,7 @@ import okio.BufferedSource
 import okio.ByteString
 import okio.EOFException
 import okio.IOException
+import kotlin.js.JsName
 import kotlin.jvm.JvmName
 
 /**
@@ -411,6 +412,7 @@ class ProtoReader(private val source: BufferedSource) {
 
   /** Reads each tag, handles it, and returns a byte string with the unknown fields. */
   @JvmName("-forEachTag") // hide from Java
+  @JsName("forEachTag")
   inline fun forEachTag(tagHandler: (Int) -> Any): ByteString {
     val token = beginMessage()
     while (true) {

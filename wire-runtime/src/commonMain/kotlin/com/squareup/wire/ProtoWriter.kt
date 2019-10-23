@@ -53,6 +53,7 @@ import com.squareup.wire.internal.Throws
 import okio.BufferedSink
 import okio.ByteString
 import okio.IOException
+import kotlin.js.JsName
 
 /**
  * Utilities for encoding and writing protocol message fields.
@@ -60,23 +61,27 @@ import okio.IOException
 class ProtoWriter(private val sink: BufferedSink) {
 
   @Throws(IOException::class)
+  @JsName("writeBytes")
   fun writeBytes(value: ByteString) {
     sink.write(value)
   }
 
   @Throws(IOException::class)
+  @JsName("writeString")
   fun writeString(value: String) {
     sink.writeUtf8(value)
   }
 
   /** Encode and write a tag.  */
   @Throws(IOException::class)
+  @JsName("writeTag")
   fun writeTag(fieldNumber: Int, fieldEncoding: FieldEncoding) {
     writeVarint32(makeTag(fieldNumber, fieldEncoding))
   }
 
   /** Write an `int32` field to the stream.  */
   @Throws(IOException::class)
+  @JsName("writeSignedVarint32")
   internal fun writeSignedVarint32(value: Int) {
     if (value >= 0) {
       writeVarint32(value)
@@ -91,6 +96,7 @@ class ProtoWriter(private val sink: BufferedSink) {
    * if negative.
    */
   @Throws(IOException::class)
+  @JsName("writeVarint32")
   fun writeVarint32(value: Int) {
     var value = value
     while (value and 0x7f.inv() != 0) {
@@ -102,6 +108,7 @@ class ProtoWriter(private val sink: BufferedSink) {
 
   /** Encode and write a varint.  */
   @Throws(IOException::class)
+  @JsName("writeVarint64")
   fun writeVarint64(value: Long) {
     var value = value
     while (value and 0x7fL.inv() != 0L) {
@@ -113,12 +120,14 @@ class ProtoWriter(private val sink: BufferedSink) {
 
   /** Write a little-endian 32-bit integer.  */
   @Throws(IOException::class)
+  @JsName("writeFixed32")
   fun writeFixed32(value: Int) {
     sink.writeIntLe(value)
   }
 
   /** Write a little-endian 64-bit integer.  */
   @Throws(IOException::class)
+  @JsName("writeFixed64")
   fun writeFixed64(value: Long) {
     sink.writeLongLe(value)
   }

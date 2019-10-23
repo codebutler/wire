@@ -30,6 +30,7 @@ import okio.BufferedSource
 import okio.ByteString
 import okio.IOException
 import okio.utf8Size
+import kotlin.js.JsName
 import kotlin.jvm.JvmField
 import kotlin.jvm.JvmStatic
 import kotlin.reflect.KClass
@@ -106,6 +107,7 @@ expect abstract class ProtoAdapter<E>(
    * the returned adapter, only single-element lists will be returned and it is the caller's
    * responsibility to merge them into the final list.
    */
+  @JsName("asRepeated")
   fun asRepeated(): ProtoAdapter<List<E>>
 
   class EnumConstantNotFoundException(

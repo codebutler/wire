@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 @file:JvmName("RuntimeUtils")
+//@file:JsName("RuntimeUtils")
 
 package com.squareup.wire.internal
 
+import kotlin.js.JsName
 import kotlin.jvm.JvmName
 
 @Suppress("NOTHING_TO_INLINE") // Syntactic sugar.

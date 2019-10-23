@@ -18,9 +18,10 @@ package com.squareup.wire
 import com.squareup.wire.internal.ProtocolException
 import com.squareup.wire.internal.Throws
 import okio.IOException
+import kotlin.js.JsName
 import kotlin.jvm.JvmStatic
 
-enum class FieldEncoding(internal val value: Int) {
+enum class FieldEncoding(@JsName("value") internal val value: Int) {
   VARINT(0), FIXED64(1), LENGTH_DELIMITED(2), FIXED32(5);
 
   /**
@@ -36,6 +37,7 @@ enum class FieldEncoding(internal val value: Int) {
 
   companion object {
     @JvmStatic
+    @JsName("get")
     @Throws(IOException::class)
     internal operator fun get(value: Int): FieldEncoding = when (value) {
       0 -> VARINT
